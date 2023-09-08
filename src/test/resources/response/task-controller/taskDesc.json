@@ -1,0 +1,6 @@
+{
+  "id": 1,
+  "name": "test_task_name",
+  "description": "task_desc",
+  "status": "TODO"
+}

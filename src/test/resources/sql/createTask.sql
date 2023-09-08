@@ -1,0 +1,1 @@
+INSERT INTO task (`id`, `name`, `description`, `status`) VALUES (1, 'test_task_name', 'test_task_description', 'TODO');
