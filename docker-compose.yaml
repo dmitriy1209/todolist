@@ -1,0 +1,35 @@
+version: '3.1'
+services:
+  mysql-db:
+    image: mysql:8.0.34
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todolistdb
+      MYSQL_USER: todolistdbuser
+      MYSQL_PASSWORD: todolistdbpass
+    ports:
+      - 3307:3306
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+  java-app:
+    image: java-app
+    restart: always
+    environment:
+      DATASOURCE_URL: jdbc:mysql://mysql-db/todolistdb?createDatabaseIfNotExist=true
+      DATASOURCE_USERNAME: todolistdbuser
+      DATASOURCE_PASSWORD: todolistdbpass
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+volumes:
+  db_data: {}
